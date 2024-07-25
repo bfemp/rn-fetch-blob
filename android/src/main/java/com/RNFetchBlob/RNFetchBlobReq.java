@@ -778,7 +778,11 @@ public class RNFetchBlobReq extends BroadcastReceiver implements Runnable {
                     // the file exists in media content database
                     if (c.moveToFirst()) {
                         // #297 handle failed request
-                        int statusCode = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                        int statusCode = DownloadManager.STATUS_FAILED;
+                        int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                        if (columnIndex > -1) {
+                            statusCode = c.getInt(columnIndex);
+                        }
                         if(statusCode == DownloadManager.STATUS_FAILED) {
                             try {
                                 this.callback.invoke("Download manager failed to download from  " + this.url + ". Query was unsuccessful ", null, null);
@@ -788,7 +792,11 @@ public class RNFetchBlobReq extends BroadcastReceiver implements Runnable {
                                 return;
                             }
                         }
-                        String contentUri = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                        int contentUri = null;
+                        int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
+                        if (columnIndex > -1) {
+                            contentUri = c.getString(columnIndex);
+                        }
                         if ( contentUri != null &&
                                 options.addAndroidDownloads.hasKey("mime") &&
                                 options.addAndroidDownloads.getString("mime").contains("image")) {

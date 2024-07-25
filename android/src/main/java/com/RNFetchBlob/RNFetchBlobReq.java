@@ -793,7 +793,7 @@ public class RNFetchBlobReq extends BroadcastReceiver implements Runnable {
                             }
                         }
                         String contentUri = null;
-                        int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
+                        columnIndex = c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI);
                         if (columnIndex > -1) {
                             contentUri = c.getString(columnIndex);
                         }
